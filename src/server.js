@@ -40,6 +40,8 @@ io.on("connection", (socket) => {
   socket.on("ice-candidate", (incoming) => {
     io.to(incoming.target).emit("ice-candidate", incoming.candidate);
   });
+  socket.on('disconnect', () => {
+    socket.to(roomId).broadcast.emit('user-disconnected', userId)
 });
 
 app.listen(PORT, () => {
