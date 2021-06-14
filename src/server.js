@@ -5,6 +5,7 @@ const http = require("http");
 const server = http.createServer(app);
 const socket = require("socket.io");
 const io = socket(server);
+io.set("transports", ["websocket"]);
 
 const db = knex({
   client: "pg",
