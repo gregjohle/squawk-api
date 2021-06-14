@@ -22,7 +22,7 @@ const db = knex({
   client: "pg",
   connection: {
     connectionString: process.env.DATABASE_URL,
-    ssl: { rejectUnauthorized: false },
+    // ssl: { rejectUnauthorized: false },
   },
 });
 
@@ -51,9 +51,6 @@ io.on("connection", (socket) => {
   });
   socket.on("ice-candidate", (incoming) => {
     io.to(incoming.target).emit("ice-candidate", incoming.candidate);
-  });
-  socket.on("disconnect", () => {
-    socket.to(rooms[roomID]).broadcast.emit("user-disconnected", userID);
   });
 });
 
