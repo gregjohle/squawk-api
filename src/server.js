@@ -4,7 +4,19 @@ const knex = require("knex");
 const http = require("http");
 const server = http.createServer(app);
 const socket = require("socket.io");
-const io = socket(server);
+const io = socket(server, {
+  cors: {
+    origins: ["*"],
+
+    handlePreflightRequest: (req, res) => {
+      res.writeHead(209, {
+        "Access-Control-Allow-Origin": process.env.ORIGIN,
+        "Access-Control-Allow-Methods": "GET, POST",
+      });
+      res.end();
+    },
+  },
+});
 
 const db = knex({
   client: "pg",
@@ -41,7 +53,7 @@ io.on("connection", (socket) => {
     io.to(incoming.target).emit("ice-candidate", incoming.candidate);
   });
   socket.on("disconnect", () => {
-    socket.to(roomID).broadcast.emit("user-disconnected", userID);
+    socket.to(rooms[roomID]).broadcast.emit("user-disconnected", userID);
   });
 });
 

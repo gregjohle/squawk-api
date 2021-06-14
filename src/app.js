@@ -24,13 +24,6 @@ app.use(helmet());
 app.use(
   cors({
     origin: "*",
-    handlePreflightRequest: (req, res) => {
-      res.writeHead(209, {
-        "Access-Control-Allow-Origin": process.env.ORIGIN,
-        "Access-Control-Allow-Methods": "GET, POST",
-      });
-      res.end();
-    },
   })
 );
 
