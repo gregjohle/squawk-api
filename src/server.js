@@ -5,7 +5,6 @@ const http = require("http");
 const server = http.createServer(app);
 const socket = require("socket.io");
 const io = socket(server);
-io.set("transports", ["websocket"]);
 
 const db = knex({
   client: "pg",
@@ -46,6 +45,6 @@ io.on("connection", (socket) => {
   });
 });
 
-app.listen(PORT, () => {
+server.listen(PORT, () => {
   console.log(`Server listening at http://localhost:${PORT}`);
 });
