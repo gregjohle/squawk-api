@@ -3,8 +3,18 @@ const knex = require("knex");
 const supertest = require("supertest");
 const app = require("../src/app");
 const bcrypt = require("bcryptjs");
-
-const { makeUsers } = require("./app.fixtures");
+const users = [
+  {
+    name: "Greg",
+    email: "greg@email.com",
+    password: "test",
+  },
+  {
+    name: "Gerg",
+    email: "gerg@email.com",
+    password: "test",
+  },
+];
 
 describe("Users Endpoints", () => {
   let db;
@@ -19,16 +29,16 @@ describe("Users Endpoints", () => {
   after("disconnect from db", () => db.destroy());
 
   before("prep tables before each test", () => {
-    db.raw("TRUNCATE users, passwords RESTART IDENTITY CASCADE");
+    db.raw("TRUNCATE users RESTART IDENTITY CASCADE");
   });
 
   afterEach("prep tables after each test", async () => {
-    await db.raw("TRUNCATE users, passwords RESTART IDENTITY CASCADE");
+    await db.raw("TRUNCATE users RESTART IDENTITY CASCADE");
   });
 
   describe("POST api/users/register", () => {
     context("user not in table", () => {
-      const testUser = makeUsers();
+      const testUser = users;
       it("responds with 201 and user added", () => {
         return supertest(app)
           .post("/api/users/register")
@@ -38,7 +48,7 @@ describe("Users Endpoints", () => {
     });
 
     context("User exists already", () => {
-      const testUser = makeUsers();
+      const testUser = users;
       const insertUser = {
         name: testUser[0].name,
         email: testUser[0].email,
@@ -60,7 +70,7 @@ describe("Users Endpoints", () => {
 
   describe("POST /api/users/login", () => {
     context("user does not exist", () => {
-      const testUser = makeUsers();
+      const testUser = users;
 
       it("responds 404 user not found", () => {
         return supertest(app)
@@ -71,7 +81,7 @@ describe("Users Endpoints", () => {
     });
 
     context("user exists", () => {
-      const testUser = makeUsers();
+      const testUser = users;
       const insertUser = {
         name: testUser[0].name,
         email: testUser[0].email,
