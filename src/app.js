@@ -6,6 +6,11 @@ const helmet = require("helmet");
 const { NODE_ENV } = require("./config");
 const UsersRouter = require("./users/usersRouter");
 const bodyParser = require("body-parser");
+const { AwakeHeroku } = require("awake-heroku");
+
+AwakeHeroku.add({
+  url: "https://sheltered-tundra-93580.herokuapp.com",
+});
 
 const app = express();
 
