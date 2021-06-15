@@ -6,7 +6,7 @@ const server = http.createServer(app);
 const socket = require("socket.io");
 const io = socket(server, {
   cors: {
-    origins: ["*"],
+    origins: [process.env.ORIGIN],
 
     handlePreflightRequest: (req, res) => {
       res.writeHead(209, {
