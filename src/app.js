@@ -8,6 +8,7 @@ const UsersRouter = require("./users/usersRouter");
 const bodyParser = require("body-parser");
 const { AwakeHeroku } = require("awake-heroku");
 
+// intended to prevent heroku from shutting down the dyno
 AwakeHeroku.add({
   url: "https://sheltered-tundra-93580.herokuapp.com",
 });
